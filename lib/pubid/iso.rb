@@ -6,6 +6,31 @@ require "yaml"
 module Pubid
   module Iso
     UPDATE_CODES = YAML.load_file(File.join(File.dirname(__FILE__), "../../update_codes.yaml"))
+
+    # Auto-discover the typed identifier classes in the Identifier
+    # namespace.
+    #
+    # @return [Array<Class>]
+    def self.identifier_types
+      @identifier_types ||= Identifier.constants.filter_map do |c|
+        begin
+          Identifier.const_get(c)
+        rescue NameError
+          nil
+        end
+      end
+        .select { |c| c.is_a?(Class) && c.singleton_methods(false).include?(:type) }
+        .select { |c| c.type.is_a?(Hash) }
+    end
+
+    # Lookup: type code -> identifier class
+    #
+    # @param code [String, Symbol] the identifier type key,
+    #   e.g. +:is+, +:ts+, +:trs+
+    # @return [Class, nil]
+    def self.locate_type(code)
+      identifier_types.find { |t| t.type[:key].to_s == code.to_s }
+    end
   end
 end
 
