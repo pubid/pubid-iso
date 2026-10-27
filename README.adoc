@@ -1,3 +1,14 @@
+[WARNING]
+====
+This gem is deprecated and no longer maintained.
+
+The per-flavor PubID gems have been superseded by
+https://github.com/metanorma/pubid[pubid 2.0] -- the unified PubID
+library implementing the publication identifiers of all standards
+bodies. Please use pubid ~> 2.0, and open issues and pull requests at
+https://github.com/metanorma/pubid[metanorma/pubid].
+====
+
 = ISO publication identifiers ("ISO PubID")
 
 image:https://badge.fury.io/rb/pubid-iso.svg["Gem Version", link="https://badge.fury.io/rb/pubid-iso"]
@@ -428,4 +439,3 @@ The patterns are as follows:
 
 // `:corrigendum-number:`:: (only when `doctype` is set to `technical-corrigendum`)
 // The number of the technical corrigendum [added in https://github.com/metanorma/isodoc/releases/tag/v1.3.25]
-
