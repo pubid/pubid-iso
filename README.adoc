@@ -1,3 +1,64 @@
+= DEPRECATION NOTICE
+
+This gem is deprecated and no longer maintained. The code now lives in
+the *pubid monogem* — https://github.com/pubid/pubid[pubid/pubid]
+(RubyGems: https://rubygems.org/gems/pubid[`pubid`] >= 2.0) — which
+bundles every former `pubid-*` flavor grammar. This repository is
+archived and read-only; issues and pull requests are disabled.
+
+== How to do what this gem did, with `pubid`
+
+Install once:
+
+[source,ruby]
+----
+# Gemfile
+gem "pubid", "~> 2.0"
+----
+
+Parse any identifier — one parser returns the typed identifier for the
+right flavor automatically:
+
+[source,ruby]
+----
+require "pubid"
+
+id = Pubid.parse("ISO 8601-1:2019")
+id.class.name   # => "Pubid::Iso::Identifiers::InternationalStandard"
+id.to_s         # => "ISO 8601-1:2019"
+id.year         # => "2019"
+id.part         # => "1"
+
+jis = Pubid.parse("JIS Z 8301:2019")
+jis.to_s        # => "JIS Z 8301:2019"
+
+dir = Pubid.parse("ISO/IEC Directives Part 2")
+dir.to_s        # => "ISO/IEC DIR 2"   (normalized)
+----
+
+Create new identifiers programmatically — the typed constructor, not
+string parsing:
+
+[source,ruby]
+----
+id = Pubid::Iso::Identifier.new(number: 8601, part: 1, year: "2019")
+id.to_s    # => "ISO 8601-1:2019"
+id.to_urn  # => "urn:iso:std:iso:8601:-1:2019"
+
+Pubid.parse("ISO 8601-1:2019").to_urn
+# => "urn:iso:std:iso:8601:-1"
+----
+
+Your existing `Pubid::Iso::…` / `Pubid::Jis::…` / `Pubid.parse` calls
+resolve exactly as before — the flavor grammars moved into the monogem
+under the same paths. The old `Pubid::Iso::Identifier.create(...)`
+module function is gone — construct with `.new(keyword args)`. Any
+`pubid-* ~> 1.x` pin becomes `pubid ~> 2.0` — the monogem is the only
+line receiving updates.
+
+
+::::
+
 [WARNING]
 ====
 This gem is deprecated and no longer maintained.
